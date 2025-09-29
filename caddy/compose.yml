@@ -22,4 +22,6 @@ services:
 
 volumes:
   caddy_data:
+    name: caddy-data
   caddy_config:
+    name: caddy-config
