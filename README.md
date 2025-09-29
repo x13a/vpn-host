@@ -1,6 +1,10 @@
 # vpn-host
 
-3x-ui behind caddy, all in docker
+VLESS + XHTTP behind CDN
+
+## Usage
+
+TODO
 
 ## License
 
