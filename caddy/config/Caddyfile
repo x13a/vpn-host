@@ -3,18 +3,13 @@
 }
 
 https://{$DOMAIN} {
-    route {$PANEL_PATH}* {
-        reverse_proxy http://3x-ui:2053
-    }
-    route {$SUB_PATH}* {
-        reverse_proxy http://3x-ui:2096
-    }
-    route {$XHTTP_PATH}* {
-        reverse_proxy http://3x-ui:8000
-    }
-    route {$XHTTP_WARP_PATH}* {
-        reverse_proxy http://3x-ui:8001
-    }
+    encode gzip
     root * /www
-    file_server
+    route {
+        reverse_proxy {$PANEL_PATH}* http://3x-ui:2053
+        reverse_proxy {$SUB_PATH}* http://3x-ui:2096
+        reverse_proxy {$XHTTP_PATH}* http://3x-ui:8000
+        reverse_proxy {$XHTTP_WARP_PATH}* http://3x-ui:8001
+        file_server
+    }
 }
