@@ -1,6 +1,6 @@
 # vpn-host
 
-VLESS + XHTTP behind CDN
+VLESS + XHTTP/gRPC/WebSocket behind CDN
 
 ## Usage
 
