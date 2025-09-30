@@ -1,46 +1,21 @@
 {
     admin off
     servers {
-        # https://www.cloudflare.com/ips/
-        trusted_proxies static 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
-        trusted_proxies_strict
-        client_ip_headers Cf-Connecting-Ip X-Forwarded-For
-
-        # https://github.com/lanrat/caddy-signal-proxy
-        listener_wrappers {
-            layer4 {
-                @signal tls sni {$SIGNAL_PROXY_DOMAIN}
-                route @signal {
-                    tls
-                    subroute {
-                        @signal-proxy {
-                            # https://github.com/signalapp/Signal-TLS-Proxy/blob/main/data/nginx-relay/nginx.conf
-                            tls sni "*.signal.org" "*.*.signal.org"
-                        }
-                        route @signal-proxy {
-                            proxy {l4.tls.server_name}:443
-                        }
-                    }
-                }
-                route
-            }
-            tls
-        }
+        import "./cloudflare.Caddyfile"
+        # import "./signal-globals.Caddyfile"
     }
 }
 
-{$SIGNAL_PROXY_DOMAIN} {
-    abort
-}
+# import "./signal-sites.Caddyfile"
 
 https://{$DOMAIN} {
     encode gzip
     root * /www
     route {
-        reverse_proxy {$PANEL_PATH}* http://3x-ui:2053
-        reverse_proxy {$SUB_PATH}* http://3x-ui:2096
-        reverse_proxy {$XHTTP_PATH}* http://3x-ui:8000
-        reverse_proxy {$XHTTP_WARP_PATH}* http://3x-ui:8001
+        reverse_proxy {$PANEL_PATH}* http://{$PANEL}:{$PANEL_PORT}
+        reverse_proxy {$SUB_PATH}* http://{$PANEL}:{$SUB_PORT}
+        reverse_proxy {$PROXY_PATH}* http://{$PANEL}:{$PROXY_PORT}
+        reverse_proxy {$PROXY_WARP_PATH}* http://{$PANEL}:{$PROXY_WARP_PORT}
         file_server
     }
 }
