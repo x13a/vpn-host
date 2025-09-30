@@ -1,6 +1,6 @@
 services:
   caddy:
-    # build: .
+    build: .
     image: caddy:latest
     restart: unless-stopped
     ports:
