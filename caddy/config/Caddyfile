@@ -1,19 +1,19 @@
 {
     admin off
     servers {
-        import "./cloudflare.Caddyfile"
-        # import "./signal-globals.Caddyfile"
+        # import "./cloudflare.caddy"
+        # import "./signal-globals.caddy"
     }
 }
 
-# import "./signal-sites.Caddyfile"
+# import "./signal-sites.caddy"
 
 https://{$DOMAIN} {
     encode gzip
     root * /www
     route {
         reverse_proxy {$PANEL_PATH}* http://{$PANEL}:{$PANEL_PORT}
-        reverse_proxy {$SUB_PATH}* http://{$PANEL}:{$SUB_PORT}
+        reverse_proxy {$SUB_PATH}/* http://{$PANEL}:{$SUB_PORT}
         reverse_proxy {$PROXY_PATH}* http://{$PANEL}:{$PROXY_PORT}
         reverse_proxy {$PROXY_WARP_PATH}* http://{$PANEL}:{$PROXY_WARP_PORT}
         file_server

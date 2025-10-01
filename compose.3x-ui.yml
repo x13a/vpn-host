@@ -1,7 +1,6 @@
 include:
   - ./caddy/compose.yml
   - ./3x-ui/compose.yml
-  # - ./s-ui/compose.yml
 
 networks:
   caddy:

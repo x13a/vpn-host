@@ -1,6 +1,6 @@
 services:
   s-ui:
-    image: alireza7/s-ui
+    image: alireza7/s-ui:latest
     container_name: s-ui
     volumes:
       - ./db:/app/db
